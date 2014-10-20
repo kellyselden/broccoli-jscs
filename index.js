@@ -1,5 +1,6 @@
 var Filter = require('broccoli-filter');
 var jscs = require('jscs');
+var config = require('jscs/lib/cli-config');
 
 var JscsFilter = function(inputTree, options) {
   if (!(this instanceof JscsFilter)) return new JscsFilter(inputTree, options);
