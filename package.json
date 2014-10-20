@@ -1,0 +1,29 @@
+{
+  "name": "broccoli-jscs",
+  "version": "0.0.1",
+  "description": "Broccoli plugin for jscs",
+  "main": "index.js",
+  "dependencies": {
+    "broccoli-filter": "^0.1.7",
+    "jscs": "^1.7.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kellyselden/broccoli-jscs.git"
+  },
+  "keywords": [
+    "broccoli-plugin",
+    "jscs",
+    "javascript"
+  ],
+  "author": "Kelly Selden",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kellyselden/broccoli-jscs/issues"
+  },
+  "homepage": "https://github.com/kellyselden/broccoli-jscs"
+}
