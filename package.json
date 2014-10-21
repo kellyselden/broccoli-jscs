@@ -25,5 +25,8 @@
   "bugs": {
     "url": "https://github.com/kellyselden/broccoli-jscs/issues"
   },
-  "homepage": "https://github.com/kellyselden/broccoli-jscs"
+  "homepage": "https://github.com/kellyselden/broccoli-jscs",
+  "ember-addon": {
+    "main": "ember-addon-main.js"
+  }
 }
