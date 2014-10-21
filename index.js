@@ -7,14 +7,13 @@ var JscsFilter = function(inputTree, options) {
 
   this.inputTree = inputTree;
 
-  var rules = config.load(options.configPath);
-  if (rules) {
-    var checker = new jscs({esnext: options && !!options.esnext});
+  var rules = !options ? {} : !options.configPath ? options : config.load(options.configPath);
+  if (!(this.bypass = !Object.keys(rules).length)) {
+    var checker = new jscs({esnext: !!options.esnext});
     checker.registerDefaultRules();
     checker.configure(rules);
     this.checker = checker;
   }
-  this.bypass = !rules;
 };
 
 JscsFilter.prototype = Object.create(Filter.prototype);
@@ -24,8 +23,8 @@ JscsFilter.prototype.targetExtension = 'js';
 JscsFilter.prototype.processString = function(content, relativePath) {
   if (!this.bypass) {
     var errors = this.checker.checkString(content, relativePath);
-    errors.getErrorList().forEach(function (err) {
-      console.log(errors.explainError(err, true));
+    errors.getErrorList().forEach(function(e) {
+      console.log(errors.explainError(e, true));
     });
   }
 
