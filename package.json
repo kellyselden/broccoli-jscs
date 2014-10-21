@@ -1,6 +1,6 @@
 {
   "name": "broccoli-jscs",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Broccoli plugin for jscs",
   "main": "index.js",
   "dependencies": {
@@ -18,7 +18,8 @@
   "keywords": [
     "broccoli-plugin",
     "jscs",
-    "javascript"
+    "javascript",
+    "ember-addon"
   ],
   "author": "Kelly Selden",
   "license": "MIT",
