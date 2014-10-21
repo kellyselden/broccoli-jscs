@@ -1,6 +1,6 @@
 {
   "name": "broccoli-jscs",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Broccoli plugin for jscs",
   "main": "index.js",
   "dependencies": {
