@@ -1,9 +1,10 @@
 var Filter = require('broccoli-filter');
 var jscs = require('jscs');
 var config = require('jscs/lib/cli-config');
+var path = require('path');
 
-var JscsFilter = function(inputTree, options) {
-  if (!(this instanceof JscsFilter)) return new JscsFilter(inputTree, options);
+var JSCSFilter = function(inputTree, options) {
+  if (!(this instanceof JSCSFilter)) return new JSCSFilter(inputTree, options);
 
   this.inputTree = inputTree;
 
@@ -16,19 +17,45 @@ var JscsFilter = function(inputTree, options) {
   }
 };
 
-JscsFilter.prototype = Object.create(Filter.prototype);
-JscsFilter.prototype.constructor = JscsFilter;
-JscsFilter.prototype.extensions = ['js'];
-JscsFilter.prototype.targetExtension = 'js';
-JscsFilter.prototype.processString = function(content, relativePath) {
+JSCSFilter.prototype = Object.create(Filter.prototype);
+JSCSFilter.prototype.constructor = JSCSFilter;
+JSCSFilter.prototype.extensions = ['js'];
+JSCSFilter.prototype.targetExtension = 'jscs.js';
+JSCSFilter.prototype.processString = function(content, relativePath) {
   if (!this.bypass) {
     var errors = this.checker.checkString(content, relativePath);
     errors.getErrorList().forEach(function(e) {
       console.log(errors.explainError(e, true));
     });
+
+    if (!this.disableTestGenerator) {
+      return this.testGenerator(relativePath, errors);
+    }
   }
 
   return content;
 };
 
-module.exports = JscsFilter;
+JSCSFilter.prototype.testGenerator = function(relativePath, errors) {
+  var errorText = '';
+  errors.getErrorList().forEach(function(e) {
+    errorText += errors.explainError(e, false) + '\n';
+  });
+  if (errorText) {
+    errorText = this.escapeErrorString('\n' + errorText);
+  }
+
+  return "module('JSCS - " + path.dirname(relativePath) + "');\n" +
+         "test('" + relativePath + " should pass jscs', function() { \n" +
+         "  ok(" + !errorText + ", '" + relativePath + " should pass jscs." + errorText + "'); \n" +
+         "});\n";
+};
+
+JSCSFilter.prototype.escapeErrorString = function(string) {
+  string = string.replace(/\n/gi, "\\n");
+  string = string.replace(/'/gi, "\\'");
+
+  return string;
+};
+
+module.exports = JSCSFilter;
