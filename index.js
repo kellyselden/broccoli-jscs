@@ -20,7 +20,7 @@ var JSCSFilter = function(inputTree, options) {
 JSCSFilter.prototype = Object.create(Filter.prototype);
 JSCSFilter.prototype.constructor = JSCSFilter;
 JSCSFilter.prototype.extensions = ['js'];
-JSCSFilter.prototype.targetExtension = 'jscs.js';
+JSCSFilter.prototype.targetExtension = 'jscs-test.js';
 JSCSFilter.prototype.processString = function(content, relativePath) {
   if (!this.bypass) {
     var errors = this.checker.checkString(content, relativePath);
