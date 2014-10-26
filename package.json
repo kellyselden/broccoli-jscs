@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "broccoli-filter": "^0.1.7",
+    "broccoli-static-compiler": "^0.2.1",
     "jscs": "^1.7.3",
     "path": "^0.4.9"
   },

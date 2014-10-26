@@ -1,4 +1,5 @@
 var JSCSFilter = require('./index');
+var pickFiles = require('broccoli-static-compiler');
 
 module.exports = {
   name: 'broccoli-jscs',
@@ -10,8 +11,11 @@ module.exports = {
       app.registry.add('js', {
         name: 'broccoli-jscs',
         ext: 'js',
-        toTree: function(tree) {
-          return new JSCSFilter(tree, app.options.jscsOptions);
+        toTree: function(tree, inputPath, outputPath, options) {
+          return pickFiles(new JSCSFilter(tree, app.options.jscsOptions), {
+            srcDir: '/',
+            destDir: outputPath + '/tests/'
+		  });
         }
       });
     }
