@@ -1,11 +1,14 @@
 {
   "name": "broccoli-jscs",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Broccoli plugin for jscs",
   "main": "index.js",
   "dependencies": {
-    "broccoli-filter": "^0.1.7",
-    "jscs": "^1.7.3"
+    "broccoli-filter": "^0.1.10",
+    "broccoli-merge-trees": "^0.2.1",
+    "broccoli-static-compiler": "^0.2.1",
+    "jscs": "^1.7.3",
+    "path": "^0.4.9"
   },
   "devDependencies": {},
   "scripts": {
@@ -18,12 +21,16 @@
   "keywords": [
     "broccoli-plugin",
     "jscs",
-    "javascript"
+    "javascript",
+    "ember-addon"
   ],
   "author": "Kelly Selden",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/kellyselden/broccoli-jscs/issues"
   },
-  "homepage": "https://github.com/kellyselden/broccoli-jscs"
+  "homepage": "https://github.com/kellyselden/broccoli-jscs",
+  "ember-addon": { 	
+    "main": "ember-addon-main.js" 	
+  }
 }

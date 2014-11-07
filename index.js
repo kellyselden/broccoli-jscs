@@ -1,6 +1,7 @@
 var Filter = require('broccoli-filter');
 var jscs = require('jscs');
 var config = require('jscs/lib/cli-config');
+var path = require('path');
 
 var JSCSFilter = function(inputTree, options) {
   if (!(this instanceof JSCSFilter)) return new JSCSFilter(inputTree, options);
@@ -26,10 +27,35 @@ JSCSFilter.prototype.processString = function(content, relativePath) {
     errors.getErrorList().forEach(function(e) {
       console.log(errors.explainError(e, true));
     });
-    this.errors = errors;
+
+    if (!this.disableTestGenerator) {
+      return this.testGenerator(relativePath, errors);
+    }
   }
 
   return content;
+};
+
+JSCSFilter.prototype.testGenerator = function(relativePath, errors) {
+  var errorText = '';
+  errors.getErrorList().forEach(function(e) {
+    errorText += errors.explainError(e, false) + '\n';
+  });
+  if (errorText) {
+    errorText = this.escapeErrorString('\n' + errorText);
+  }
+
+  return "module('JSCS - " + path.dirname(relativePath) + "');\n" +
+         "test('" + relativePath + " should pass jscs', function() { \n" +
+         "  ok(" + !errorText + ", '" + relativePath + " should pass jscs." + errorText + "'); \n" +
+         "});\n";
+};
+
+JSCSFilter.prototype.escapeErrorString = function(string) {
+  string = string.replace(/\n/gi, "\\n");
+  string = string.replace(/'/gi, "\\'");
+
+  return string;
 };
 
 module.exports = JSCSFilter;
