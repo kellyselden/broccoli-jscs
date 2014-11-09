@@ -16,19 +16,17 @@ module.exports = {
         toTree: function(tree, inputPath, outputPath, options) {
           var jscsTree = new JSCSFilter(tree, app.options.jscsOptions);
 
-          if (!jscsTree.bypass && !jscsTree.disableTestGenerator) {
-            jscsTree.targetExtension = 'jscs-test.js';
-
-            return mergeTrees([
-              tree,
-              pickFiles(jscsTree, {
-                srcDir: '/',
-                destDir: outputPath + '/tests/'
-              })
-            ], { overwrite: true });
+          if (!jscsTree.enabled || jscsTree.bypass || jscsTree.disableTestGenerator) {
+            return tree;
           }
 
-          return tree;
+          return mergeTrees([
+            tree,
+            pickFiles(jscsTree, {
+              srcDir: '/',
+              destDir: outputPath + '/tests/'
+            })
+          ], { overwrite: true });
         }
       });
     }

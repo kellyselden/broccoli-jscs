@@ -7,13 +7,27 @@ var JSCSFilter = function(inputTree, options) {
   if (!(this instanceof JSCSFilter)) return new JSCSFilter(inputTree, options);
 
   this.inputTree = inputTree;
+  this.enabled = true;
 
-  var rules = !options ? {} : !options.configPath ? options : config.load(options.configPath);
-  if (!(this.bypass = !Object.keys(rules).length)) {
-    var checker = new jscs({ esnext: !!options.esnext });
-    checker.registerDefaultRules();
-    checker.configure(rules);
-    this.checker = checker;
+  options = options || {};
+  for (var key in options) {
+    if (options.hasOwnProperty(key)) {
+      this[key] = options[key];
+    }
+  }
+
+  if (this.enabled) {
+    var rules = config.load(this.configPath || '.jscsrc') || {};
+    if (!(this.bypass = !Object.keys(rules).length)) {
+      var checker = new jscs({ esnext: !!this.esnext });
+      checker.registerDefaultRules();
+      checker.configure(rules);
+      this.checker = checker;
+
+      if (!this.disableTestGenerator) {
+        this.targetExtension = 'jscs-test.js';
+      }
+    }
   }
 };
 
@@ -22,11 +36,13 @@ JSCSFilter.prototype.constructor = JSCSFilter;
 JSCSFilter.prototype.extensions = ['js'];
 JSCSFilter.prototype.targetExtension = 'js';
 JSCSFilter.prototype.processString = function(content, relativePath) {
-  if (!this.bypass) {
+  if (this.enabled && !this.bypass) {
     var errors = this.checker.checkString(content, relativePath);
-    errors.getErrorList().forEach(function(e) {
-      console.log(errors.explainError(e, true));
-    });
+
+    var errorText = this.processErrors(errors, true);
+    if (errorText) {
+      this.logError(errorText);
+    }
 
     if (!this.disableTestGenerator) {
       return this.testGenerator(relativePath, errors);
@@ -36,11 +52,14 @@ JSCSFilter.prototype.processString = function(content, relativePath) {
   return content;
 };
 
+JSCSFilter.prototype.processErrors = function(errors, colorize) {
+  return errors.getErrorList().map(function(error) {
+    return errors.explainError(error, colorize);
+  }).join('\n');
+};
+
 JSCSFilter.prototype.testGenerator = function(relativePath, errors) {
-  var errorText = '';
-  errors.getErrorList().forEach(function(e) {
-    errorText += errors.explainError(e, false) + '\n';
-  });
+  var errorText = this.processErrors(errors, false);
   if (errorText) {
     errorText = this.escapeErrorString('\n' + errorText);
   }
@@ -49,6 +68,10 @@ JSCSFilter.prototype.testGenerator = function(relativePath, errors) {
          "test('" + relativePath + " should pass jscs', function() { \n" +
          "  ok(" + !errorText + ", '" + relativePath + " should pass jscs." + errorText + "'); \n" +
          "});\n";
+};
+
+JSCSFilter.prototype.logError = function(message) {
+  console.log(message);
 };
 
 JSCSFilter.prototype.escapeErrorString = function(string) {
