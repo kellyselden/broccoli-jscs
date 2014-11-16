@@ -45,7 +45,8 @@ JSCSFilter.prototype.processString = function(content, relativePath) {
     }
 
     if (!this.disableTestGenerator) {
-      return this.testGenerator(relativePath, errors);
+      errorText = this.processErrors(errors, false);
+      return this.testGenerator(relativePath, errorText);
     }
   }
 
@@ -59,14 +60,13 @@ JSCSFilter.prototype.processErrors = function(errors, colorize) {
 };
 
 JSCSFilter.prototype.testGenerator = function(relativePath, errors) {
-  var errorText = this.processErrors(errors, false);
-  if (errorText) {
-    errorText = this.escapeErrorString('\n' + errorText);
+  if (errors) {
+    errors = this.escapeErrorString('\n' + errors);
   }
 
   return "module('JSCS - " + path.dirname(relativePath) + "');\n" +
-         "test('" + relativePath + " should pass jscs', function() { \n" +
-         "  ok(" + !errorText + ", '" + relativePath + " should pass jscs." + errorText + "'); \n" +
+         "test('" + relativePath + " should pass jscs', function() {\n" +
+         "  ok(" + !errors + ", '" + relativePath + " should pass jscs." + errors + "');\n" +
          "});\n";
 };
 
