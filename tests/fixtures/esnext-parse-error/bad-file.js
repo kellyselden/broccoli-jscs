@@ -1,0 +1,1 @@
+module foo from 'bar';

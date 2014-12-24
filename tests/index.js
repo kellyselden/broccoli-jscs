@@ -203,6 +203,36 @@ describe('broccoli-jscs', function() {
         expect(readFile(dir + '/index.' + tree.targetExtension)).to.match(/ok\(true, 'index.js should pass jscs.'\);/);
       });
     });
+
+    it('generates empty content for excluded files with test generation', function() {
+      var sourcePath = 'tests/fixtures/esnext-parse-error';
+      chdir(sourcePath);
+
+      var tree = jscsTree('.');
+
+      builder = new broccoli.Builder(tree);
+      return builder.build().then(function(results) {
+        var dir = results.directory;
+        expect(readFile(dir + '/bad-file.' + tree.targetExtension)).to.be('');
+        expect(readFile(dir + '/good-file.' + tree.targetExtension)).to.match(/ok\(true, 'good-file.js should pass jscs.'\);/);
+      });
+    });
+
+    it('generates original content for excluded files without test generation', function() {
+      var sourcePath = 'tests/fixtures/esnext-parse-error';
+      chdir(sourcePath);
+
+      var tree = jscsTree('.', {
+        disableTestGenerator: true
+      });
+
+      builder = new broccoli.Builder(tree);
+      return builder.build().then(function(results) {
+        var dir = results.directory;
+        expect(readFile(dir + '/bad-file.' + tree.targetExtension)).to.be(readFile('bad-file.js'));
+        expect(readFile(dir + '/good-file.' + tree.targetExtension)).to.be(readFile('good-file.js'));
+      });
+    });
   });
 
   describe('escapeErrorString', function() {

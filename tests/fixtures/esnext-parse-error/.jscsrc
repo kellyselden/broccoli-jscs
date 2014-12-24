@@ -1,0 +1,4 @@
+{
+  "esnext": true,
+  "excludeFiles": ["bad-file.js"]
+}

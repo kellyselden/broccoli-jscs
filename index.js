@@ -17,11 +17,11 @@ var JSCSFilter = function(inputTree, options) {
   }
 
   if (this.enabled) {
-    var rules = config.load(this.configPath || '.jscsrc') || {};
-    if (!(this.bypass = !Object.keys(rules).length)) {
+    this.rules = config.load(this.configPath || '.jscsrc') || {};
+    if (!(this.bypass = !Object.keys(this.rules).length)) {
       var checker = new jscs({ esnext: !!this.esnext });
       checker.registerDefaultRules();
-      checker.configure(rules);
+      checker.configure(this.rules);
       this.checker = checker;
 
       if (!this.disableTestGenerator) {
@@ -37,6 +37,10 @@ JSCSFilter.prototype.extensions = ['js'];
 JSCSFilter.prototype.targetExtension = 'js';
 JSCSFilter.prototype.processString = function(content, relativePath) {
   if (this.enabled && !this.bypass) {
+    if (this.rules.excludeFiles && this.rules.excludeFiles.indexOf(relativePath) > -1) {
+      return this.disableTestGenerator ? content : '';
+    }
+
     var errors = this.checker.checkString(content, relativePath);
 
     var errorText = this.processErrors(errors, true);
