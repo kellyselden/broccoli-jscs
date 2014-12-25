@@ -44,9 +44,6 @@ describe('broccoli-jscs', function() {
     });
 
     it('don\'t bypass if jscsrc file is found', function() {
-      // trying to make travis-cs happy
-      this.timeout(2500);
-
       var sourcePath = 'tests/fixtures/issue-found';
       chdir(sourcePath);
 
