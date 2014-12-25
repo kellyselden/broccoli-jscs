@@ -2,6 +2,7 @@ broccoli-jscs
 =============
 
 [![Build Status](https://travis-ci.org/kellyselden/broccoli-jscs.svg?branch=master)](https://travis-ci.org/kellyselden/broccoli-jscs)
+[![Coverage Status](https://img.shields.io/coveralls/kellyselden/broccoli-jscs.svg)](https://coveralls.io/r/kellyselden/broccoli-jscs)
 
 Broccoli plugin for [jscs](https://github.com/jscs-dev/node-jscs)
 
