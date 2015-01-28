@@ -2,6 +2,7 @@ var Filter = require('broccoli-filter');
 var jscs = require('jscs');
 var config = require('jscs/lib/cli-config');
 var path = require('path');
+var minimatch = require('minimatch');
 
 var JSCSFilter = function(inputTree, options) {
   if (!(this instanceof JSCSFilter)) return new JSCSFilter(inputTree, options);
@@ -37,8 +38,13 @@ JSCSFilter.prototype.extensions = ['js'];
 JSCSFilter.prototype.targetExtension = 'js';
 JSCSFilter.prototype.processString = function(content, relativePath) {
   if (this.enabled && !this.bypass) {
-    if (this.rules.excludeFiles && this.rules.excludeFiles.indexOf(relativePath) > -1) {
-      return this.disableTestGenerator ? content : '';
+    if (this.rules.excludeFiles) {
+      var excludeMatch = this.rules.excludeFiles.filter(function(excludeFileMatcher) {
+        return minimatch(relativePath, excludeFileMatcher);
+      });
+      if(excludeMatch && excludeMatch.length) {
+        return this.disableTestGenerator ? content : '';
+      }
     }
 
     var errors = this.checker.checkString(content, relativePath);
