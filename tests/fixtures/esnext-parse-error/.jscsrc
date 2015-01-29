@@ -1,4 +1,4 @@
 {
   "esnext": true,
-  "excludeFiles": ["bad-file.js"]
+  "excludeFiles": ["bad-file.js", "bad-files/*.js"]
 }

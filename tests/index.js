@@ -214,6 +214,7 @@ describe('broccoli-jscs', function() {
       return builder.build().then(function(results) {
         var dir = results.directory;
         expect(readFile(dir + '/bad-file.' + tree.targetExtension)).to.be('');
+        expect(readFile(dir + '/bad-files/exclude-me.' + tree.targetExtension)).to.be('');
         expect(readFile(dir + '/good-file.' + tree.targetExtension)).to.match(/ok\(true, 'good-file.js should pass jscs.'\);/);
       });
     });
