@@ -1,13 +1,25 @@
+'use strict';
+
 var Filter = require('broccoli-filter');
 var jscs = require('jscs');
 var config = require('jscs/lib/cli-config');
 var path = require('path');
+var minimatch = require('minimatch');
+
+function _makeDictionary() {
+  var cache = Object.create(null);
+  cache['_dict'] = null;
+  delete cache['_dict'];
+  return cache;
+}
 
 var JSCSFilter = function(inputTree, options) {
   if (!(this instanceof JSCSFilter)) return new JSCSFilter(inputTree, options);
 
   this.inputTree = inputTree;
   this.enabled = true;
+
+  this._excludeFileCache = _makeDictionary();
 
   options = options || {};
   for (var key in options) {
@@ -37,7 +49,7 @@ JSCSFilter.prototype.extensions = ['js'];
 JSCSFilter.prototype.targetExtension = 'js';
 JSCSFilter.prototype.processString = function(content, relativePath) {
   if (this.enabled && !this.bypass) {
-    if (this.rules.excludeFiles && this.rules.excludeFiles.indexOf(relativePath) > -1) {
+    if (this.shouldExcludeFile(relativePath)) {
       return this.disableTestGenerator ? content : '';
     }
 
@@ -83,6 +95,40 @@ JSCSFilter.prototype.escapeErrorString = function(string) {
   string = string.replace(/'/gi, "\\'");
 
   return string;
+};
+
+JSCSFilter.prototype.shouldExcludeFile = function(relativePath) {
+  if (this.rules.excludeFiles) {
+    // The user specified an "excludeFiles" list.
+    // Must pattern match or find a cache hit to determine if this relativePath is an actual JSCS exclusion.
+    var excludeFileCache = this._excludeFileCache;
+
+    if (excludeFileCache[relativePath] !== undefined) {
+      // This relativePath is in the cache, so we've already run minimatch.
+      return excludeFileCache[relativePath];
+    }
+
+    var i, l, pattern;
+
+    // This relativePath is NOT in the cache. Execute _matchesPattern().
+    for (i = 0, l = this.rules.excludeFiles.length; i < l; i++) {
+      pattern = this.rules.excludeFiles[i];
+      if (this._matchesPattern(relativePath, pattern)) {
+        // User has specified "excludeFiles" and this relativePath did match at least 1 exclusion.
+        return excludeFileCache[relativePath] = true;
+      }
+    }
+
+    // User has specified excludeFiles but this relativePath did NOT match any exclusions.
+    excludeFileCache[relativePath] = false;
+  }
+
+  // The user has NOT specified an "excludeFiles" list. Continue processing like normal.
+  return false;
+};
+
+JSCSFilter.prototype._matchesPattern = function(relativePath, pattern) {
+  return minimatch(relativePath, pattern);
 };
 
 module.exports = JSCSFilter;
