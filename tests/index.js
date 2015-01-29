@@ -214,6 +214,7 @@ describe('broccoli-jscs', function() {
       return builder.build().then(function(results) {
         var dir = results.directory;
         expect(readFile(dir + '/bad-file.' + tree.targetExtension)).to.be('');
+        expect(readFile(dir + '/another-bad-file.' + tree.targetExtension)).to.be('');
         expect(readFile(dir + '/good-file.' + tree.targetExtension)).to.match(/ok\(true, 'good-file.js should pass jscs.'\);/);
       });
     });
@@ -230,8 +231,44 @@ describe('broccoli-jscs', function() {
       return builder.build().then(function(results) {
         var dir = results.directory;
         expect(readFile(dir + '/bad-file.' + tree.targetExtension)).to.be(readFile('bad-file.js'));
+        expect(readFile(dir + '/another-bad-file.' + tree.targetExtension)).to.be(readFile('another-bad-file.js'));
         expect(readFile(dir + '/good-file.' + tree.targetExtension)).to.be(readFile('good-file.js'));
       });
+    });
+  });
+
+  describe('excludeFileCache', function() {
+    it('test file exclude caching - glob matching should only run once for a given relative path', function() {
+      var sourcePath = 'tests/fixtures/esnext-parse-error';
+      var matchesPatternCalled = 0;
+      var tree;
+      chdir(sourcePath);
+
+      tree = jscsTree('.', {});
+
+      tree._matchesPattern = function() {
+        matchesPatternCalled++;
+        return true;
+      };
+
+      expect(tree._excludeFileCache).to.be.empty();
+
+      tree.processString(readFile('another-bad-file.js'), 'another-bad-file.js');
+      tree.processString(readFile('bad-file.js'), 'bad-file.js');
+      tree.processString(readFile('good-file.js'), 'good-file.js');
+
+      expect(tree._excludeFileCache['another-bad-file.js']).to.be.ok();
+      expect(tree._excludeFileCache['bad-file.js']).to.be.ok();
+      expect(tree._excludeFileCache['good-file.js']).to.be.ok();
+      expect(tree._excludeFileCache).to.only.have.keys('another-bad-file.js', 'bad-file.js', 'good-file.js');
+      expect(matchesPatternCalled).to.be(3);
+
+      tree.processString(readFile('another-bad-file.js'), 'another-bad-file.js');
+      tree.processString(readFile('bad-file.js'), 'bad-file.js');
+      tree.processString(readFile('good-file.js'), 'good-file.js');
+
+      expect(tree._excludeFileCache).to.only.have.keys('another-bad-file.js', 'bad-file.js', 'good-file.js');
+      expect(matchesPatternCalled).to.be(3);
     });
   });
 
