@@ -1,4 +1,4 @@
-var JSCSFilter = require('broccoli-jscs');
+var JSCSFilter = require('./index');
 var mergeTrees = require('broccoli-merge-trees');
 var pickFiles = require('broccoli-static-compiler');
 

@@ -8,6 +8,7 @@
     "broccoli-merge-trees": "^0.2.1",
     "broccoli-static-compiler": "^0.2.1",
     "jscs": "^1.10.0",
+    "minimatch": "^2.0.1",
     "path": "^0.4.9"
   },
   "devDependencies": {
