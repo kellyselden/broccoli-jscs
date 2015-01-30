@@ -1,0 +1,4 @@
+{
+  "excludeFiles": ["excluded.js", "glob-match*.js"],
+  "validateIndentation": 2
+}

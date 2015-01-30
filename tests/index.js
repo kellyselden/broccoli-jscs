@@ -76,7 +76,7 @@ describe('broccoli-jscs', function() {
       chdir(sourcePath);
 
       var tree = new jscsTree('.', {
-        configPath: '../only-jscsrc/.jscsrc',
+        configPath: '../only-jscsrc/.jscsrc-with-unique-name',
         logError: function(message) { loggerOutput.push(message); }
       });
 
@@ -237,7 +237,22 @@ describe('broccoli-jscs', function() {
     });
   });
 
-  describe('excludeFileCache', function() {
+  describe('excludeFiles', function() {
+    it('excludes single file and glob', function() {
+      var sourcePath = 'tests/fixtures/excludes';
+      chdir(sourcePath);
+
+      tree = jscsTree('.', {
+        logError: function(message) { loggerOutput.push(message); }
+      });
+
+      builder = new broccoli.Builder(tree);
+      return builder.build().then(function() {
+        expect(loggerOutput.join('\n')).to.match(/function included/);
+        expect(loggerOutput.join('\n')).to.not.match(/function excluded/);
+      });
+    });
+
     it('test file exclude caching - glob matching should only run once for a given relative path', function() {
       var sourcePath = 'tests/fixtures/esnext-parse-error';
       var matchesPatternCalled = 0;
