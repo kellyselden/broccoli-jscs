@@ -1,9 +1,9 @@
 'use strict';
 
-var Filter = require('broccoli-filter');
-var jscs = require('jscs');
-var config = require('jscs/lib/cli-config');
-var path = require('path');
+var Filter    = require('broccoli-filter');
+var jscs      = require('jscs');
+var config    = require('jscs/lib/cli-config');
+var path      = require('path');
 var minimatch = require('minimatch');
 
 function _makeDictionary() {
@@ -14,7 +14,7 @@ function _makeDictionary() {
 }
 
 var JSCSFilter = function(inputTree, options) {
-  if (!(this instanceof JSCSFilter)) return new JSCSFilter(inputTree, options);
+  if (!(this instanceof JSCSFilter)) { return new JSCSFilter(inputTree, options); }
 
   this.inputTree = inputTree;
   this.enabled = true;

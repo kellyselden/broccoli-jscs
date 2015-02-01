@@ -9,13 +9,26 @@ Broccoli plugin for [jscs](https://github.com/jscs-dev/node-jscs)
 
 ## Usage
 
-```javascript
+```js
 var jscs = require('broccoli-jscs');
 
 // assuming someTree is a built up tree
 var tree = jscs(someTree);
 // or
 var tree = jscs('folderName');
+```
+
+As a Ember CLI Addon, simply `npm install --save-dev broccoli-jscs` and supply the options you would like:
+
+```js
+var app = new EmberApp({
+  jscsOptions: {
+    configPath: '/my/path/.jscsrc',
+    enabled: true,
+    esnext: true,
+    disableTestGenerator: false
+  }
+});
 ```
 
 ## Documentation
