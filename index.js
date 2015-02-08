@@ -6,6 +6,8 @@ var config    = require('jscs/lib/cli-config');
 var path      = require('path');
 var minimatch = require('minimatch');
 
+var jsStringEscape = require('js-string-escape');
+
 function _makeDictionary() {
   var cache = Object.create(null);
   cache['_dict'] = null;
@@ -90,12 +92,7 @@ JSCSFilter.prototype.logError = function(message) {
   console.log(message);
 };
 
-JSCSFilter.prototype.escapeErrorString = function(string) {
-  string = string.replace(/\n/gi, "\\n");
-  string = string.replace(/'/gi, "\\'");
-
-  return string;
-};
+JSCSFilter.prototype.escapeErrorString = jsStringEscape;
 
 JSCSFilter.prototype.shouldExcludeFile = function(relativePath) {
   if (this.rules.excludeFiles) {
