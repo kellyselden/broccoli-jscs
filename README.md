@@ -37,7 +37,7 @@ You can also supply the options in the `.jscsrc` file if you wish:
 {
   "esnext": true,
   "excludeFiles": ["path/to/file"],
-  //more rules...
+  // more rules...
 }
 ```
 
@@ -121,9 +121,9 @@ Exclude files or directories from processing. Supports globbing. Example:
 ```js
 var app = new EmberApp({
   jscsOptions: {
-    excludeFiles: ["ember-runtime/ext/rsvp.js"]
-    //or
-    excludeFiles: ["webclient/tests/**"]
+    excludeFiles: ['ember-runtime/ext/rsvp.js']
+    // or
+    excludeFiles: ['webclient/tests/**']
   }
 });
 ```
