@@ -31,6 +31,16 @@ var app = new EmberApp({
 });
 ```
 
+You can also supply the options in the `.jscsrc` file if you wish:
+
+```js
+{
+  "esnext": true,
+  "excludeFiles": ["path/to/file"],
+  //more rules...
+}
+```
+
 ## Documentation
 
 ### `jscs(inputTree, options)`
@@ -91,7 +101,7 @@ The function receives the following arguments:
 
 Default generates QUnit style tests:
 
-```javascript
+```js
 var path = require('path');
 
 function(relativePath, errors) {
@@ -102,11 +112,27 @@ function(relativePath, errors) {
 };
 ```
 
+---
+
+`options.excludeFiles` *{String}*
+
+Exclude files or directories from processing. Supports globbing. Example:
+
+```js
+var app = new EmberApp({
+  jscsOptions: {
+    excludeFiles: ["ember-runtime/ext/rsvp.js"]
+    //or
+    excludeFiles: ["webclient/tests/**"]
+  }
+});
+```
+
 ## Tests
 
 Running the tests:
 
-```javascript
+```
 npm install
 npm test
 ```
