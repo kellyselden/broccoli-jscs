@@ -14,7 +14,7 @@ module.exports = {
     var jscsTree = new JSCSFilter(tree, this.app.options.jscsOptions);
 
     if (!jscsTree.enabled || jscsTree.bypass || jscsTree.disableTestGenerator) {
-      return;
+      return tree;
     }
 
     return jscsTree;
