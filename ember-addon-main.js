@@ -11,9 +11,15 @@ module.exports = {
   },
 
   lintTree: function(type, tree) {
-    var jscsTree = new JSCSFilter(tree, this.app.options.jscsOptions);
+    var jscsOptions = this.app.options.jscsOptions;
 
-    if (!jscsTree.enabled || jscsTree.bypass || jscsTree.disableTestGenerator) {
+    if (jscsOptions && !jscsOptions.enabled) {
+      return tree;
+    }
+
+    var jscsTree = new JSCSFilter(tree, jscsOptions);
+
+    if (jscsTree.bypass || jscsTree.disableTestGenerator) {
       return tree;
     }
 
