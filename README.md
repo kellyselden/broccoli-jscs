@@ -4,6 +4,8 @@ broccoli-jscs
 [![Build Status](https://travis-ci.org/kellyselden/broccoli-jscs.svg?branch=master)](https://travis-ci.org/kellyselden/broccoli-jscs)
 [![Dependency Status](https://david-dm.org/kellyselden/broccoli-jscs.svg)](https://david-dm.org/kellyselden/broccoli-jscs)
 [![devDependency Status](https://david-dm.org/kellyselden/broccoli-jscs/dev-status.svg)](https://david-dm.org/kellyselden/broccoli-jscs#info=devDependencies)
+[![Code Climate](https://codeclimate.com/github/kellyselden/broccoli-jscs/badges/gpa.svg)](https://codeclimate.com/github/kellyselden/broccoli-jscs)
+[![Coverage Status](https://coveralls.io/repos/kellyselden/broccoli-jscs/badge.svg?branch=master)](https://coveralls.io/r/kellyselden/broccoli-jscs?branch=master)
 
 Broccoli plugin for [jscs](https://github.com/jscs-dev/node-jscs)
 
