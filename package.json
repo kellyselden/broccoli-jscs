@@ -15,11 +15,14 @@
   },
   "devDependencies": {
     "broccoli": "^0.15.0",
+    "coveralls": "^2.11.2",
     "expect.js": "^0.3.1",
+    "istanbul": "^0.3.13",
     "mocha": "^2.1.0"
   },
   "scripts": {
-    "test": "mocha tests"
+    "test": "mocha tests",
+    "cover": "istanbul cover node_modules/mocha/bin/_mocha tests"
   },
   "repository": {
     "type": "git",
