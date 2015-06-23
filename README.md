@@ -9,6 +9,8 @@ broccoli-jscs
 
 Broccoli plugin for [jscs](https://github.com/jscs-dev/node-jscs)
 
+*Note: Requires >= ember-cli@0.1.10 if used as an addon*
+
 ## Usage
 
 ```js

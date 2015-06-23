@@ -219,7 +219,7 @@ describe('broccoli-jscs', function() {
       });
     });
 
-    it('generates original content for excluded files without test generation', function() {
+    it('generates empty content for excluded files without test generation', function() {
       var sourcePath = 'tests/fixtures/esnext-parse-error';
       chdir(sourcePath);
 
@@ -230,9 +230,9 @@ describe('broccoli-jscs', function() {
       builder = new broccoli.Builder(tree);
       return builder.build().then(function(results) {
         var dir = results.directory;
-        expect(readFile(dir + '/bad-file.' + tree.targetExtension)).to.be(readFile('bad-file.js'));
-        expect(readFile(dir + '/another-bad-file.' + tree.targetExtension)).to.be(readFile('another-bad-file.js'));
-        expect(readFile(dir + '/good-file.' + tree.targetExtension)).to.be(readFile('good-file.js'));
+        expect(readFile(dir + '/bad-file.' + tree.targetExtension)).to.be('');
+        expect(readFile(dir + '/another-bad-file.' + tree.targetExtension)).to.be('');
+        expect(readFile(dir + '/good-file.' + tree.targetExtension)).to.be('');
       });
     });
   });

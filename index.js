@@ -52,7 +52,7 @@ JSCSFilter.prototype.targetExtension = 'js';
 JSCSFilter.prototype.processString = function(content, relativePath) {
   if (this.enabled && !this.bypass) {
     if (this.shouldExcludeFile(relativePath)) {
-      return this.disableTestGenerator ? content : '';
+      return '';
     }
 
     var errors = this.checker.checkString(content, relativePath);
@@ -68,7 +68,7 @@ JSCSFilter.prototype.processString = function(content, relativePath) {
     }
   }
 
-  return content;
+  return '';
 };
 
 JSCSFilter.prototype.processErrors = function(errors, colorize) {
