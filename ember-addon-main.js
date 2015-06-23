@@ -38,7 +38,8 @@ module.exports = {
         toTree: function(tree, inputPath, outputPath, options) {
           var jscsTree = addonContext.lintTree('unknown-type', tree);
 
-          if (!jscsTree) {
+          // I can't get ember-cli@0.1.10 to run to test this
+          if (jscsTree === tree) {
             return tree;
           }
 
