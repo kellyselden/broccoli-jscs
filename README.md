@@ -1,6 +1,7 @@
 broccoli-jscs
 =============
 
+[![npm version](https://badge.fury.io/js/broccoli-jscs.svg)](http://badge.fury.io/js/broccoli-jscs)
 [![Build Status](https://travis-ci.org/kellyselden/broccoli-jscs.svg?branch=master)](https://travis-ci.org/kellyselden/broccoli-jscs)
 [![Dependency Status](https://david-dm.org/kellyselden/broccoli-jscs.svg)](https://david-dm.org/kellyselden/broccoli-jscs)
 [![devDependency Status](https://david-dm.org/kellyselden/broccoli-jscs/dev-status.svg)](https://david-dm.org/kellyselden/broccoli-jscs#info=devDependencies)
