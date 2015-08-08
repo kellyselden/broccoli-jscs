@@ -4,21 +4,21 @@
   "description": "Broccoli plugin for jscs",
   "main": "index.js",
   "dependencies": {
-    "broccoli-filter": "^0.1.10",
-    "broccoli-merge-trees": "^0.2.1",
+    "broccoli-filter": "^0.2.0",
+    "broccoli-merge-trees": "^0.2.2",
     "broccoli-static-compiler": "^0.2.1",
-    "ember-cli-version-checker": "^1.0.2",
+    "ember-cli-version-checker": "^1.1.4",
     "js-string-escape": "^1.0.0",
     "jscs": "^2.0.0",
-    "minimatch": "^2.0.1",
+    "minimatch": "^2.0.10",
     "path": "^0.11.14"
   },
   "devDependencies": {
-    "broccoli": "^0.15.0",
-    "coveralls": "^2.11.2",
+    "broccoli": "^0.16.5",
+    "coveralls": "^2.11.3",
     "expect.js": "^0.3.1",
-    "istanbul": "^0.3.13",
-    "mocha": "^2.1.0"
+    "istanbul": "^0.3.17",
+    "mocha": "^2.2.5"
   },
   "scripts": {
     "test": "mocha tests",
