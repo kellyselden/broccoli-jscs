@@ -6,6 +6,7 @@ var config    = require('jscs/lib/cli-config');
 var path      = require('path');
 var minimatch = require('minimatch');
 
+var symlinkOrCopySync = require('symlink-or-copy').sync;
 var jsStringEscape = require('js-string-escape');
 
 function _makeDictionary() {
@@ -17,6 +18,7 @@ function _makeDictionary() {
 
 var JSCSFilter = function(inputTree, options) {
   if (!(this instanceof JSCSFilter)) { return new JSCSFilter(inputTree, options); }
+  this._files = _makeDictionary();
 
   this.inputTree = inputTree;
   this.enabled = true;
@@ -49,6 +51,19 @@ JSCSFilter.prototype = Object.create(Filter.prototype);
 JSCSFilter.prototype.constructor = JSCSFilter;
 JSCSFilter.prototype.extensions = ['js'];
 JSCSFilter.prototype.targetExtension = 'js';
+JSCSFilter.prototype.processFile = function(srcDir, destDir, relativePath) {
+  var key = srcDir + '/' + relativePath;
+  var entry=  this._cache[relativePath];
+  if (entry && entry.cacheFiles[0]) {
+
+    var cacheFilePath = this.getCacheDir() + '/' + entry.cacheFiles[0];
+    var relativePath = relativePath.replace(/\.js$/, '.jscs-test.js');
+    symlinkOrCopySync(cacheFilePath, destDir + '/' + relativePath);
+  } else {
+    return Filter.prototype.processFile.call(this, srcDir, destDir, relativePath);
+  }
+};
+
 JSCSFilter.prototype.processString = function(content, relativePath) {
   if (this.enabled && !this.bypass) {
     if (this.shouldExcludeFile(relativePath)) {
