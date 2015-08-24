@@ -1,10 +1,12 @@
 'use strict';
 
-var Filter    = require('broccoli-filter');
+var Filter    = require('broccoli-persistent-filter');
 var jscs      = require('jscs');
 var config    = require('jscs/lib/cli-config');
 var path      = require('path');
 var minimatch = require('minimatch');
+var stringify = require('json-stable-stringify');
+var crypto    = require('crypto');
 
 var jsStringEscape = require('js-string-escape');
 
@@ -15,15 +17,22 @@ function _makeDictionary() {
   return cache;
 }
 
-var JSCSFilter = function(inputTree, options) {
-  if (!(this instanceof JSCSFilter)) { return new JSCSFilter(inputTree, options); }
+var JSCSFilter = function(inputTree, _options) {
+  if (!(this instanceof JSCSFilter)) { return new JSCSFilter(inputTree, _options); }
 
+  var options = _options || {};
+  if (!options.hasOwnProperty('persist')) {
+    options.persist = true;
+  }
+
+  Filter.call(this, inputTree, options);
+
+  this.options = options;
   this.inputTree = inputTree;
   this.enabled = true;
 
   this._excludeFileCache = _makeDictionary();
 
-  options = options || {};
   for (var key in options) {
     if (options.hasOwnProperty(key)) {
       this[key] = options[key];
@@ -49,6 +58,11 @@ JSCSFilter.prototype = Object.create(Filter.prototype);
 JSCSFilter.prototype.constructor = JSCSFilter;
 JSCSFilter.prototype.extensions = ['js'];
 JSCSFilter.prototype.targetExtension = 'js';
+
+JSCSFilter.prototype.baseDir = function() {
+  return __dirname;
+};
+
 JSCSFilter.prototype.processString = function(content, relativePath) {
   if (this.enabled && !this.bypass) {
     if (this.shouldExcludeFile(relativePath)) {
@@ -126,6 +140,24 @@ JSCSFilter.prototype.shouldExcludeFile = function(relativePath) {
 
 JSCSFilter.prototype._matchesPattern = function(relativePath, pattern) {
   return minimatch(relativePath, pattern);
+};
+
+JSCSFilter.prototype.optionsHash  = function() {
+  if (!this._optionsHash) {
+    this._optionsHash = crypto.createHash('md5')
+      .update(stringify(this.options), 'utf8')
+      .update(stringify(this.rules) || '', 'utf8')
+      .update(this.testGenerator.toString(), 'utf8')
+      .update(this.logError.toString(), 'utf8')
+      .update(this.escapeErrorString.toString(), 'utf8')
+      .digest('hex');
+  }
+
+  return this._optionsHash;
+};
+
+JSCSFilter.prototype.cacheKeyProcessString = function(string, relativePath) {
+  return this.optionsHash() + Filter.prototype.cacheKeyProcessString.call(this, string, relativePath);
 };
 
 module.exports = JSCSFilter;
