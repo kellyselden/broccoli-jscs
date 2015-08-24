@@ -3,6 +3,7 @@ var expect = require('expect.js');
 var root = process.cwd();
 
 var fs = require('fs');
+var path = require('path');
 var broccoli = require('broccoli');
 
 var builder;
@@ -33,9 +34,7 @@ describe('broccoli-jscs', function() {
   describe('jscsrc', function() {
     it('bypass if no jscsrc file is found', function() {
       var sourcePath = 'tests/fixtures/no-jscsrc';
-      chdir(sourcePath);
-
-      var tree = new jscsTree('.', {});
+      var tree = new jscsTree(sourcePath, {});
 
       builder = new broccoli.Builder(tree);
       return builder.build().then(function() {
@@ -47,21 +46,17 @@ describe('broccoli-jscs', function() {
       var sourcePath = 'tests/fixtures/issue-found';
       chdir(sourcePath);
 
-      var tree = new jscsTree('.', {
-        logError: function() {}
-      });
+      var tree = new jscsTree('.');
 
-      builder = new broccoli.Builder(tree);
-      return builder.build().then(function() {
-        expect(tree.bypass).to.not.be.ok();
-      });
+      expect(tree.bypass).to.not.be.ok();
     });
 
     it('uses the jscsrc as configuration', function() {
       var sourcePath = 'tests/fixtures/issue-found';
-      chdir(sourcePath);
 
-      var tree = new jscsTree('.', {
+      var tree = new jscsTree(sourcePath, {
+        persist: false,
+        configPath: path.join(sourcePath, '.jscsrc'),
         logError: function(message) { loggerOutput.push(message); }
       });
 
@@ -73,10 +68,10 @@ describe('broccoli-jscs', function() {
 
     it('supply your own jscsrc file', function() {
       var sourcePath = 'tests/fixtures/no-jscsrc';
-      chdir(sourcePath);
 
-      var tree = new jscsTree('.', {
-        configPath: '../only-jscsrc/.jscsrc-with-unique-name',
+      var tree = new jscsTree(sourcePath, {
+        persist: false,
+        configPath: 'tests/fixtures/only-jscsrc/.jscsrc-with-unique-name',
         logError: function(message) { loggerOutput.push(message); }
       });
 
@@ -93,6 +88,7 @@ describe('broccoli-jscs', function() {
       chdir(sourcePath);
 
       var tree = new jscsTree('.', {
+        persist: false,
         enabled: false,
         logError: function(message) { loggerOutput.push(message); }
       });
@@ -108,6 +104,7 @@ describe('broccoli-jscs', function() {
       chdir(sourcePath);
 
       var tree = new jscsTree('.', {
+        persist: false,
         esnext: true,
         logError: function(message) { loggerOutput.push(message); }
       });
@@ -139,6 +136,7 @@ describe('broccoli-jscs', function() {
       chdir(sourcePath);
 
       var tree = new jscsTree('.', {
+        persist: false,
         logError: function(message) { loggerOutput.push(message); }
       });
 
@@ -243,6 +241,8 @@ describe('broccoli-jscs', function() {
       chdir(sourcePath);
 
       tree = jscsTree('.', {
+        persist: false,
+
         logError: function(message) { loggerOutput.push(message); }
       });
 
