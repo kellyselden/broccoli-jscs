@@ -13,7 +13,7 @@ module.exports = {
   lintTree: function(type, tree) {
     var jscsOptions = this.app.options.jscsOptions;
 
-    if (jscsOptions && !jscsOptions.enabled) {
+    if (jscsOptions && jscsOptions.disabled) {
       return tree;
     }
 
@@ -27,16 +27,16 @@ module.exports = {
   },
 
   included: function(app) {
-    var addonContext = this;
-    this.app = app;
     this._super.included.apply(this, arguments);
 
     if (app.tests && this.shouldSetupRegistryInIncluded()) {
+      var _this = this;
       app.registry.add('js', {
         name: 'broccoli-jscs',
         ext: 'js',
         toTree: function(tree, inputPath, outputPath, options) {
-          var jscsTree = addonContext.lintTree('unknown-type', tree);
+          _this.app = app;
+          var jscsTree = _this.lintTree('unknown-type', tree);
 
           // I can't get ember-cli@0.1.10 to run to test this
           if (jscsTree === tree) {

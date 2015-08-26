@@ -19,7 +19,6 @@ var JSCSFilter = function(inputTree, options) {
   if (!(this instanceof JSCSFilter)) { return new JSCSFilter(inputTree, options); }
 
   this.inputTree = inputTree;
-  this.enabled = true;
 
   this._excludeFileCache = _makeDictionary();
 
@@ -30,7 +29,7 @@ var JSCSFilter = function(inputTree, options) {
     }
   }
 
-  if (this.enabled) {
+  if (!this.disabled) {
     this.rules = config.load(this.configPath || '.jscsrc') || {};
     if (!(this.bypass = !Object.keys(this.rules).length)) {
       var checker = new jscs({ esnext: !!this.esnext });
@@ -50,7 +49,7 @@ JSCSFilter.prototype.constructor = JSCSFilter;
 JSCSFilter.prototype.extensions = ['js'];
 JSCSFilter.prototype.targetExtension = 'js';
 JSCSFilter.prototype.processString = function(content, relativePath) {
-  if (this.enabled && !this.bypass) {
+  if (!this.disabled && !this.bypass) {
     if (this.shouldExcludeFile(relativePath)) {
       return this.disableTestGenerator ? content : '';
     }
