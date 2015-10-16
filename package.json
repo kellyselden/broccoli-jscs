@@ -9,7 +9,7 @@
     "broccoli-static-compiler": "^0.2.1",
     "ember-cli-version-checker": "^1.0.2",
     "js-string-escape": "^1.0.0",
-    "jscs": "^2.0.0",
+    "jscs": "^2.3.2",
     "json-stable-stringify": "^1.0.0",
     "minimatch": "^2.0.1",
     "path": "^0.11.14"
