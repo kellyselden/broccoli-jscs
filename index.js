@@ -40,8 +40,7 @@ var JSCSFilter = function(inputTree, _options) {
   }
 
   if (this.enabled) {
-    this.rules = config.load(this.configPath || '.jscsrc') || this.config || {};
-
+    this.rules = config.load(this.configPath || '.jscsrc') || {};
     if (!(this.bypass = !Object.keys(this.rules).length)) {
       var checker = new jscs({ esnext: !!this.esnext });
       checker.registerDefaultRules();
