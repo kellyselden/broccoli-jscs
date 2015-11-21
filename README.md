@@ -59,6 +59,17 @@ Default: **'.jscsrc'**
 
 ---
 
+`options.config` *{Object}*
+
+Specify the options for JSCS programatically, accepts the same kind of JSON
+style object as you would provide in the `.jscsrc` file. This option will be
+overriden when a `.jscsrc` file is in the root or when `options.configPath` is
+set.
+
+Default: **'{}'**
+
+---
+
 `options.enabled` *{true|false}*
 
 This will eliminate processing altogether.

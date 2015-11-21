@@ -80,6 +80,21 @@ describe('broccoli-jscs', function() {
         expect(loggerOutput.length).to.not.eql(0);
       });
     });
+
+    it('supply your own in code config object', function() {
+      var sourcePath = 'tests/fixtures/code-config';
+
+      var tree = new jscsTree(sourcePath, {
+        persist: false,
+        config: { "validateIndentation": 2 },
+        logError: function(message) { loggerOutput.push(message); }
+      });
+
+      builder = new broccoli.Builder(tree);
+      return builder.build().then(function() {
+        expect(loggerOutput.length).to.not.eql(0);
+      });
+    });
   });
 
   describe('options', function() {
