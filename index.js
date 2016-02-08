@@ -39,8 +39,25 @@ var JSCSFilter = function(inputTree, _options) {
     }
   }
 
+};
+
+JSCSFilter.prototype = Object.create(Filter.prototype);
+JSCSFilter.prototype.constructor = JSCSFilter;
+JSCSFilter.prototype.extensions = ['js'];
+JSCSFilter.prototype.targetExtension = 'js';
+
+JSCSFilter.prototype.baseDir = function() {
+  return __dirname;
+};
+
+JSCSFilter.prototype.build = function () {
+  this.configure();
+  return Filter.prototype.build.call(this);
+};
+
+JSCSFilter.prototype.configure = function () {
   if (this.enabled) {
-    this.rules = config.load(this.configPath || (inputTree + '/.jscsrc')) || this.config || {};
+    this.rules = this.loadRules(this.inputPaths[0]);
 
     this.bypass = Object.keys(this.rules).length === 0;
     if (!this.bypass) {
@@ -56,13 +73,8 @@ var JSCSFilter = function(inputTree, _options) {
   }
 };
 
-JSCSFilter.prototype = Object.create(Filter.prototype);
-JSCSFilter.prototype.constructor = JSCSFilter;
-JSCSFilter.prototype.extensions = ['js'];
-JSCSFilter.prototype.targetExtension = 'js';
-
-JSCSFilter.prototype.baseDir = function() {
-  return __dirname;
+JSCSFilter.prototype.loadRules = function (rootPath) {
+  return config.load(this.configPath || path.join(rootPath, '.jscsrc')) || this.config || {};
 };
 
 JSCSFilter.prototype.processString = function(content, relativePath) {

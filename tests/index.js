@@ -256,6 +256,8 @@ describe('broccoli-jscs', function() {
       var tree;
 
       tree = jscsTree(sourcePath, {});
+      tree.inputPaths = [sourcePath];
+      tree.configure();
 
       tree._matchesPattern = function() {
         matchesPatternCalled++;
