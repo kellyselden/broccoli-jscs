@@ -110,10 +110,19 @@ JSCSFilter.prototype.testGenerator = function(relativePath, errors) {
     errors = this.escapeErrorString('\n' + errors);
   }
 
-  return "module('JSCS - " + path.dirname(relativePath) + "');\n" +
-         "test('" + relativePath + " should pass jscs', function() {\n" +
-         "  ok(" + !errors + ", '" + relativePath + " should pass jscs." + errors + "');\n" +
-         "});\n";
+  if (this.testFramework === 'mocha') {
+    return "describe('JSCS - " + relativePath + "', function() {\n" +
+           "  it('should pass jscs', function() {\n" +
+           "    expect(" + !errors + ", '" + relativePath + " should pass jscs." + errors + "').to.be.ok;\n" +
+           "  });\n" +
+           "});\n";
+
+  } else {
+    return "module('JSCS - " + path.dirname(relativePath) + "');\n" +
+           "test('" + relativePath + " should pass jscs', function() {\n" +
+           "  ok(" + !errors + ", '" + relativePath + " should pass jscs." + errors + "');\n" +
+           "});\n";
+  }
 };
 
 JSCSFilter.prototype.logError = function(message) {

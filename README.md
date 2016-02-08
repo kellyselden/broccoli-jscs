@@ -105,6 +105,17 @@ Default: **false**
 
 ---
 
+`options.testFramework` *{String}*
+
+This setting determines what kind of tests are generated. If a custom `testGenerator` is set `testFramework` will be ignored.
+
+This setting currently supports the following test frameworks:
+
+* `qunit` *(default)*
+* `mocha`
+
+---
+
 `options.testGenerator` *{Function}*
 
 The function used to generate test modules. You can provide a custom function for your client side testing framework of choice.

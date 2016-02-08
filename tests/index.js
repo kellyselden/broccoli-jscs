@@ -247,6 +247,20 @@ describe('broccoli-jscs', function() {
         expect(readFile(dir + '/index.' + tree.targetExtension)).to.equal('foo');
       });
     });
+
+    it('generates test files with custom test generator', function() {
+      var sourcePath = 'tests/fixtures/no-issues-found';
+
+      var tree = jscsTree(sourcePath, {
+        testFramework: 'mocha'
+      });
+
+      builder = new broccoli.Builder(tree);
+      return builder.build().then(function(results) {
+        var dir = results.directory;
+        expect(readFile(dir + '/index.' + tree.targetExtension)).to.match(/expect\(true, 'index.js should pass jscs.'\).to.be.ok;/);
+      });
+    });
   });
 
   describe('excludeFiles', function() {
