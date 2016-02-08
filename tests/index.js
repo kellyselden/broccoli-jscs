@@ -231,6 +231,22 @@ describe('broccoli-jscs', function() {
         expect(readFile(dir + '/good-file.' + tree.targetExtension)).to.be(readFile(sourcePath + '/good-file.js'));
       });
     });
+
+    it('generates test files with custom test generator', function() {
+      var sourcePath = 'tests/fixtures/no-issues-found';
+
+      var tree = jscsTree(sourcePath, {
+        testGenerator: function() {
+          return 'foo';
+        }
+      });
+
+      builder = new broccoli.Builder(tree);
+      return builder.build().then(function(results) {
+        var dir = results.directory;
+        expect(readFile(dir + '/index.' + tree.targetExtension)).to.equal('foo');
+      });
+    });
   });
 
   describe('excludeFiles', function() {
