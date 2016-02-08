@@ -40,7 +40,7 @@ var JSCSFilter = function(inputTree, _options) {
   }
 
   if (this.enabled) {
-    this.rules = config.load(this.configPath || '.jscsrc') || this.config || {};
+    this.rules = config.load(this.configPath || (inputTree + '/.jscsrc')) || this.config || {};
 
     this.bypass = Object.keys(this.rules).length === 0;
     if (!this.bypass) {
