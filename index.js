@@ -42,7 +42,8 @@ var JSCSFilter = function(inputTree, _options) {
   if (this.enabled) {
     this.rules = config.load(this.configPath || '.jscsrc') || this.config || {};
 
-    if (!(this.bypass = !Object.keys(this.rules).length)) {
+    this.bypass = Object.keys(this.rules).length === 0;
+    if (!this.bypass) {
       var checker = new jscs({ esnext: !!this.esnext });
       checker.registerDefaultRules();
       checker.configure(this.rules);
