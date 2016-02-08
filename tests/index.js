@@ -15,13 +15,7 @@ describe('broccoli-jscs', function() {
     return fs.readFileSync(path, { encoding: 'utf8' });
   }
 
-  function chdir(path) {
-    process.chdir(path);
-  }
-
   beforeEach(function() {
-    chdir(root);
-
     loggerOutput = [];
   });
 
@@ -44,9 +38,8 @@ describe('broccoli-jscs', function() {
 
     it('don\'t bypass if jscsrc file is found', function() {
       var sourcePath = 'tests/fixtures/issue-found';
-      chdir(sourcePath);
 
-      var tree = new jscsTree('.');
+      var tree = new jscsTree(sourcePath);
 
       expect(tree.bypass).to.not.be.ok();
     });
@@ -100,9 +93,8 @@ describe('broccoli-jscs', function() {
   describe('options', function() {
     it('doesn\'t run if disabled', function() {
       var sourcePath = 'tests/fixtures/issue-found';
-      chdir(sourcePath);
 
-      var tree = new jscsTree('.', {
+      var tree = new jscsTree(sourcePath, {
         persist: false,
         enabled: false,
         logError: function(message) { loggerOutput.push(message); }
@@ -116,9 +108,8 @@ describe('broccoli-jscs', function() {
 
     it('runs with esnext enabled', function() {
       var sourcePath = 'tests/fixtures/esnext';
-      chdir(sourcePath);
 
-      var tree = new jscsTree('.', {
+      var tree = new jscsTree(sourcePath, {
         persist: false,
         esnext: true,
         logError: function(message) { loggerOutput.push(message); }
@@ -134,9 +125,8 @@ describe('broccoli-jscs', function() {
   describe('jscs', function() {
     it('passes all rules', function() {
       var sourcePath = 'tests/fixtures/no-issues-found';
-      chdir(sourcePath);
 
-      var tree = new jscsTree('.', {
+      var tree = new jscsTree(sourcePath, {
         logError: function(message) { loggerOutput.push(message); }
       });
 
@@ -148,9 +138,8 @@ describe('broccoli-jscs', function() {
 
     it('finds an expected issue', function() {
       var sourcePath = 'tests/fixtures/issue-found';
-      chdir(sourcePath);
 
-      var tree = new jscsTree('.', {
+      var tree = new jscsTree(sourcePath, {
         persist: false,
         logError: function(message) { loggerOutput.push(message); }
       });
@@ -165,9 +154,8 @@ describe('broccoli-jscs', function() {
   describe('testGenerator', function() {
     it('retains targetExtension when disableTestGenerator is true', function() {
       var sourcePath = 'tests/fixtures/no-issues-found';
-      chdir(sourcePath);
 
-      var tree = jscsTree('.', {
+      var tree = jscsTree(sourcePath, {
         disableTestGenerator: true
       });
 
@@ -179,9 +167,8 @@ describe('broccoli-jscs', function() {
 
     it('sets targetExtension correctly when disableTestGenerator is false', function() {
       var sourcePath = 'tests/fixtures/no-issues-found';
-      chdir(sourcePath);
 
-      var tree = jscsTree('.', {});
+      var tree = jscsTree(sourcePath, {});
 
       builder = new broccoli.Builder(tree);
       return builder.build().then(function(results) {
@@ -191,9 +178,8 @@ describe('broccoli-jscs', function() {
 
     it('does not generate tests if disableTestGenerator is set', function() {
       var sourcePath = 'tests/fixtures/no-issues-found';
-      chdir(sourcePath);
 
-      var tree = jscsTree('.', {
+      var tree = jscsTree(sourcePath, {
         disableTestGenerator: true
       });
 
@@ -206,9 +192,8 @@ describe('broccoli-jscs', function() {
 
     it('generates test files for jscs issues', function() {
       var sourcePath = 'tests/fixtures/no-issues-found';
-      chdir(sourcePath);
 
-      var tree = jscsTree('.', {});
+      var tree = jscsTree(sourcePath, {});
 
       builder = new broccoli.Builder(tree);
       return builder.build().then(function(results) {
@@ -219,9 +204,8 @@ describe('broccoli-jscs', function() {
 
     it('generates empty content for excluded files with test generation', function() {
       var sourcePath = 'tests/fixtures/esnext-parse-error';
-      chdir(sourcePath);
 
-      var tree = jscsTree('.');
+      var tree = jscsTree(sourcePath);
 
       builder = new broccoli.Builder(tree);
       return builder.build().then(function(results) {
@@ -234,18 +218,17 @@ describe('broccoli-jscs', function() {
 
     it('generates original content for excluded files without test generation', function() {
       var sourcePath = 'tests/fixtures/esnext-parse-error';
-      chdir(sourcePath);
 
-      var tree = jscsTree('.', {
+      var tree = jscsTree(sourcePath, {
         disableTestGenerator: true
       });
 
       builder = new broccoli.Builder(tree);
       return builder.build().then(function(results) {
         var dir = results.directory;
-        expect(readFile(dir + '/bad-file.' + tree.targetExtension)).to.be(readFile('bad-file.js'));
-        expect(readFile(dir + '/another-bad-file.' + tree.targetExtension)).to.be(readFile('another-bad-file.js'));
-        expect(readFile(dir + '/good-file.' + tree.targetExtension)).to.be(readFile('good-file.js'));
+        expect(readFile(dir + '/bad-file.' + tree.targetExtension)).to.be(readFile(sourcePath + '/bad-file.js'));
+        expect(readFile(dir + '/another-bad-file.' + tree.targetExtension)).to.be(readFile(sourcePath + '/another-bad-file.js'));
+        expect(readFile(dir + '/good-file.' + tree.targetExtension)).to.be(readFile(sourcePath + '/good-file.js'));
       });
     });
   });
@@ -253,9 +236,8 @@ describe('broccoli-jscs', function() {
   describe('excludeFiles', function() {
     it('excludes single file and glob', function() {
       var sourcePath = 'tests/fixtures/excludes';
-      chdir(sourcePath);
 
-      tree = jscsTree('.', {
+      tree = jscsTree(sourcePath, {
         persist: false,
 
         logError: function(message) { loggerOutput.push(message); }
@@ -272,9 +254,8 @@ describe('broccoli-jscs', function() {
       var sourcePath = 'tests/fixtures/esnext-parse-error';
       var matchesPatternCalled = 0;
       var tree;
-      chdir(sourcePath);
 
-      tree = jscsTree('.', {});
+      tree = jscsTree(sourcePath, {});
 
       tree._matchesPattern = function() {
         matchesPatternCalled++;
@@ -283,9 +264,9 @@ describe('broccoli-jscs', function() {
 
       expect(tree._excludeFileCache).to.be.empty();
 
-      tree.processString(readFile('another-bad-file.js'), 'another-bad-file.js');
-      tree.processString(readFile('bad-file.js'), 'bad-file.js');
-      tree.processString(readFile('good-file.js'), 'good-file.js');
+      tree.processString(readFile(sourcePath + '/another-bad-file.js'), 'another-bad-file.js');
+      tree.processString(readFile(sourcePath + '/bad-file.js'), 'bad-file.js');
+      tree.processString(readFile(sourcePath + '/good-file.js'), 'good-file.js');
 
       expect(tree._excludeFileCache['another-bad-file.js']).to.be.ok();
       expect(tree._excludeFileCache['bad-file.js']).to.be.ok();
@@ -293,9 +274,9 @@ describe('broccoli-jscs', function() {
       expect(tree._excludeFileCache).to.only.have.keys('another-bad-file.js', 'bad-file.js', 'good-file.js');
       expect(matchesPatternCalled).to.be(3);
 
-      tree.processString(readFile('another-bad-file.js'), 'another-bad-file.js');
-      tree.processString(readFile('bad-file.js'), 'bad-file.js');
-      tree.processString(readFile('good-file.js'), 'good-file.js');
+      tree.processString(readFile(sourcePath + '/another-bad-file.js'), 'another-bad-file.js');
+      tree.processString(readFile(sourcePath + '/bad-file.js'), 'bad-file.js');
+      tree.processString(readFile(sourcePath + '/good-file.js'), 'good-file.js');
 
       expect(tree._excludeFileCache).to.only.have.keys('another-bad-file.js', 'bad-file.js', 'good-file.js');
       expect(matchesPatternCalled).to.be(3);
