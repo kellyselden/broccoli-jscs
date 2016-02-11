@@ -248,7 +248,7 @@ describe('broccoli-jscs', function() {
       });
     });
 
-    it('generates test files with custom test generator', function() {
+    it('generates test files for the mocha test framework', function() {
       var sourcePath = 'tests/fixtures/no-issues-found';
 
       var tree = jscsTree(sourcePath, {
