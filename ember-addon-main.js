@@ -2,6 +2,7 @@ var JSCSFilter = require('broccoli-jscs');
 var mergeTrees = require('broccoli-merge-trees');
 var pickFiles  = require('broccoli-static-compiler');
 var checker = require('ember-cli-version-checker');
+var jsStringEscape = require('js-string-escape');
 
 module.exports = {
   name: 'broccoli-jscs',
@@ -11,10 +12,25 @@ module.exports = {
   },
 
   lintTree: function(type, tree) {
-    var jscsOptions = this.app.options.jscsOptions;
+    var jscsOptions = this.app.options.jscsOptions || {};
 
-    if (jscsOptions && !jscsOptions.enabled) {
+    if (!jscsOptions.enabled) {
       return tree;
+    }
+
+    var project = this.project;
+    if (!jscsOptions.testGenerator && project.generateTestFile) {
+      jscsOptions.testGenerator = function(relativePath, errors) {
+        if (errors) {
+          errors = jsStringEscape('\n' + errors);
+        }
+
+        return project.generateTestFile('JSCS - ' + relativePath, [{
+          name: 'should pass jscs',
+          passed: !errors,
+          errorMessage: relativePath + ' should pass jscs.' + errors
+        }]);
+      }
     }
 
     var jscsTree = new JSCSFilter(tree, jscsOptions);
