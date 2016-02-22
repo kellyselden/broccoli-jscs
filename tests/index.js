@@ -55,7 +55,7 @@ describe('broccoli-jscs', function() {
 
       builder = new broccoli.Builder(tree);
       return builder.build().then(function() {
-        expect(loggerOutput.length).to.not.eql(0);
+        expect(loggerOutput.join('\n')).to.contain('Expected indentation of 2 characters');
       });
     });
 
