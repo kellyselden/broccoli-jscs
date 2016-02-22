@@ -44,6 +44,20 @@ describe('broccoli-jscs', function() {
       expect(tree.bypass).to.not.be.ok();
     });
 
+    it('defaults to .jscsrc in source path folder', function() {
+      var sourcePath = 'tests/fixtures/issue-found';
+
+      var tree = new jscsTree(sourcePath, {
+        persist: false,
+        logError: function(message) { loggerOutput.push(message); }
+      });
+
+      builder = new broccoli.Builder(tree);
+      return builder.build().then(function() {
+        expect(loggerOutput.join('\n')).to.contain('Expected indentation of 2 characters');
+      });
+    });
+
     it('uses the jscsrc as configuration', function() {
       var sourcePath = 'tests/fixtures/issue-found';
 
