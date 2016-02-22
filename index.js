@@ -7,6 +7,7 @@ var path      = require('path');
 var minimatch = require('minimatch');
 var stringify = require('json-stable-stringify');
 var crypto    = require('crypto');
+var findup    = require('findup-sync');
 
 var jsStringEscape = require('js-string-escape');
 
@@ -74,7 +75,11 @@ JSCSFilter.prototype.configure = function () {
 };
 
 JSCSFilter.prototype.loadRules = function (rootPath) {
-  return config.load(this.configPath || path.join(rootPath, '.jscsrc')) || this.config || {};
+  return config.load(this.configPath || this.findJSCSRC(rootPath)) || this.config || {};
+};
+
+JSCSFilter.prototype.findJSCSRC = function (rootPath) {
+  return findup('.jscsrc', {cwd: rootPath, nocase: true});
 };
 
 JSCSFilter.prototype.processString = function(content, relativePath) {

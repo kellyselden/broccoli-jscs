@@ -8,6 +8,7 @@
     "broccoli-persistent-filter": "^1.0.3",
     "broccoli-static-compiler": "^0.2.1",
     "ember-cli-version-checker": "^1.0.2",
+    "findup-sync": "^0.3.0",
     "js-string-escape": "^1.0.0",
     "jscs": "^2.0.0",
     "json-stable-stringify": "^1.0.0",
