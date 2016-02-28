@@ -1,5 +1,9 @@
 # Changelog
 
+### v1.4.0
+
+- [#69](https://github.com/kellyselden/broccoli-jscs/pull/69) Use project.generateTestFile() if available [@Turbo87](https://github.com/Turbo87)
+
 ### v1.3.1
 
 - [#66](https://github.com/kellyselden/broccoli-jscs/pull/66) Fix .jscsrc path issues [@Turbo87](https://github.com/Turbo87)
