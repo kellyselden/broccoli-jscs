@@ -1,6 +1,6 @@
 var JSCSFilter = require('broccoli-jscs');
 var mergeTrees = require('broccoli-merge-trees');
-var pickFiles  = require('broccoli-static-compiler');
+var Funnel = require('broccoli-funnel');
 var checker = require('ember-cli-version-checker');
 var jsStringEscape = require('js-string-escape');
 
@@ -61,7 +61,7 @@ module.exports = {
 
           return mergeTrees([
             tree,
-            pickFiles(jscsTree, {
+            new Funnel(jscsTree, {
               srcDir: '/',
               destDir: outputPath + '/tests/'
             })
