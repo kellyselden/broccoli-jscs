@@ -4,7 +4,7 @@
   "description": "Broccoli plugin for jscs",
   "main": "index.js",
   "dependencies": {
-    "broccoli-merge-trees": "^0.2.1",
+    "broccoli-merge-trees": "^1.1.1",
     "broccoli-persistent-filter": "^1.0.3",
     "broccoli-static-compiler": "^0.2.1",
     "ember-cli-version-checker": "^1.0.2",
