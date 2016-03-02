@@ -12,7 +12,7 @@
     "js-string-escape": "^1.0.0",
     "jscs": "^2.0.0",
     "json-stable-stringify": "^1.0.0",
-    "minimatch": "^2.0.1"
+    "minimatch": "^3.0.0"
   },
   "devDependencies": {
     "broccoli": "^0.15.0",
