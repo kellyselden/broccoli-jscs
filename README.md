@@ -29,7 +29,6 @@ var app = new EmberApp({
   jscsOptions: {
     configPath: '/my/path/.jscsrc',
     enabled: true,
-    esnext: true,
     disableTestGenerator: false
   }
 });
@@ -39,7 +38,6 @@ You can also supply the options in the `.jscsrc` file if you wish:
 
 ```js
 {
-  "esnext": true,
   "excludeFiles": ["path/to/file"],
   // more rules...
 }
@@ -74,14 +72,6 @@ Default: **'{}'**
 `options.enabled` *{true|false}*
 
 This will eliminate processing altogether.
-
-Default: **false**
-
----
-
-`options.esnext` *{true|false}*
-
-Support ES6 module syntax.
 
 Default: **false**
 
