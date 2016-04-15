@@ -62,7 +62,7 @@ JSCSFilter.prototype.configure = function () {
 
     this.bypass = Object.keys(this.rules).length === 0;
     if (!this.bypass) {
-      var checker = new jscs({ esnext: !!this.esnext });
+      var checker = new jscs();
       checker.registerDefaultRules();
       checker.configure(this.rules);
       this.checker = checker;
