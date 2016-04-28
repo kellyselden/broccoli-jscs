@@ -1,5 +1,9 @@
 # Changelog
 
+### v2.0.0
+
+- [#77](https://github.com/kellyselden/broccoli-jscs/pull/77) Updating JSCS to final major release ver ^3.0.0 [@alexdiliberto](https://github.com/alexdiliberto)
+
 ### v1.4.0
 
 - [#69](https://github.com/kellyselden/broccoli-jscs/pull/69) Use project.generateTestFile() if available [@Turbo87](https://github.com/Turbo87)
