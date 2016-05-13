@@ -123,7 +123,7 @@ JSCSFilter.prototype.testGenerator = function(relativePath, errors) {
            "});\n";
 
   } else {
-    return "module('JSCS - " + path.dirname(relativePath) + "');\n" +
+    return "module('JSCS | " + path.dirname(relativePath) + "');\n" +
            "test('" + relativePath + " should pass jscs', function() {\n" +
            "  ok(" + !errors + ", '" + relativePath + " should pass jscs." + errors + "');\n" +
            "});\n";
