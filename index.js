@@ -90,18 +90,32 @@ JSCSFilter.prototype.processString = function(content, relativePath) {
 
     var errors = this.checker.checkString(content, relativePath);
 
-    var errorText = this.processErrors(errors, true);
-    if (errorText) {
-      this.logError(errorText);
-    }
-
     if (!this.disableTestGenerator) {
-      errorText = this.processErrors(errors, false);
-      return this.testGenerator(relativePath, errorText);
+      var errorText = this.processErrors(errors, false);
+      return {
+        errors: errorText,
+        output: this.testGenerator(relativePath, errorText)
+      }
     }
   }
 
   return content;
+};
+
+JSCSFilter.prototype.postProcess = function(results) {
+  var errors = results.errors;
+
+  if (this.failOnAnyError && errors.length > 0){
+    generalError = new Error('JSCS failed');
+    generalError.jscsErrors = errors;
+    throw generalError;
+  }
+
+  if (errors) {
+    this.logError(errors);
+  }
+
+  return results;
 };
 
 JSCSFilter.prototype.processErrors = function(errors, colorize) {
