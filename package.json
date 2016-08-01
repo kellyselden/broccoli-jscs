@@ -19,7 +19,7 @@
     "coveralls": "^2.11.2",
     "expect.js": "^0.3.1",
     "istanbul": "^0.4.2",
-    "mocha": "^2.1.0"
+    "mocha": "^3.0.0"
   },
   "scripts": {
     "test": "mocha tests",
