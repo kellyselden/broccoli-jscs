@@ -1,13 +1,14 @@
 broccoli-jscs
 =============
 
-[![npm version](https://badge.fury.io/js/broccoli-jscs.svg)](http://badge.fury.io/js/broccoli-jscs)
 [![Build Status](https://travis-ci.org/kellyselden/broccoli-jscs.svg?branch=master)](https://travis-ci.org/kellyselden/broccoli-jscs)
 [![Build status](https://ci.appveyor.com/api/projects/status/w2yk4p8c1mtu1c96/branch/master?svg=true)](https://ci.appveyor.com/project/kellyselden/broccoli-jscs/branch/master)
-[![Dependency Status](https://david-dm.org/kellyselden/broccoli-jscs.svg)](https://david-dm.org/kellyselden/broccoli-jscs)
-[![devDependency Status](https://david-dm.org/kellyselden/broccoli-jscs/dev-status.svg)](https://david-dm.org/kellyselden/broccoli-jscs#info=devDependencies)
 [![Code Climate](https://codeclimate.com/github/kellyselden/broccoli-jscs/badges/gpa.svg)](https://codeclimate.com/github/kellyselden/broccoli-jscs)
 [![Coverage Status](https://coveralls.io/repos/kellyselden/broccoli-jscs/badge.svg?branch=master)](https://coveralls.io/r/kellyselden/broccoli-jscs?branch=master)
+
+[![npm version](https://badge.fury.io/js/broccoli-jscs.svg)](http://badge.fury.io/js/broccoli-jscs)
+[![dependencies Status](https://david-dm.org/kellyselden/broccoli-jscs/status.svg)](https://david-dm.org/kellyselden/broccoli-jscs)
+[![devDependencies Status](https://david-dm.org/kellyselden/broccoli-jscs/dev-status.svg)](https://david-dm.org/kellyselden/broccoli-jscs?type=dev)
 
 Broccoli plugin for [jscs](https://github.com/jscs-dev/node-jscs)
 
