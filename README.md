@@ -10,6 +10,8 @@ broccoli-jscs
 [![dependencies Status](https://david-dm.org/kellyselden/broccoli-jscs/status.svg)](https://david-dm.org/kellyselden/broccoli-jscs)
 [![devDependencies Status](https://david-dm.org/kellyselden/broccoli-jscs/dev-status.svg)](https://david-dm.org/kellyselden/broccoli-jscs?type=dev)
 
+## JSCS was merged into ESLint, so this project is no longer being worked on.
+
 Broccoli plugin for [jscs](https://github.com/jscs-dev/node-jscs)
 
 ## Usage
